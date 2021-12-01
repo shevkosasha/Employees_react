@@ -1,3 +1,5 @@
+import { Component } from 'react';
+
 import AppInfo from '../app-info/app-info';
 import SearchPanel from '../search-panel/search-panel';
 import AppFilter from '../app-filter/app-filter';
@@ -6,28 +8,56 @@ import EmployeesAddForm from '../employees-add-form/employees-add-form';
 
 import './app.css';
 
-function App() {
+class App extends Component {
 
-  const data = [
-      {name: 'John C.', salary: 800, increase: false},
-      {name: 'Alex M.', salary: 3000, increase: true},
-      {name: 'Carl W.', salary: 5000, increase: false},
-      {name: 'Bob M.', salary: 15000, increase: false}
-  ];
+  constructor(props){
+    super(props);
+    this.state = {
+      data: [
+        {name: 'John C.', salary: 800, increase: false, id: 1},
+        {name: 'Alex M.', salary: 3000, increase: true, id: 2},
+        {name: 'Carl W.', salary: 5000, increase: false, id: 3},
+        {name: 'Bob M.', salary: 15000, increase: false, id: 4}
+      ]
+    }
+  };
 
-  return (
-    <div className="app">
-        <AppInfo />
-
-        <div className="search-panel">
-            <SearchPanel/>
-            <AppFilter/>
-        </div>
+  deleteItem = (id) => {
+    // console.log(id);
+    this.setState(({data}) => {
+      const index = data.findIndex(elem => elem.id === id);
+      console.log(index);
+      // const before = data.slice(0,index);
+      // const after = data.slice(index+1);
+      // const newArr = [...before, ...after];
+      return {
+        data: data.filter(item => item.id !== id),
+      }
         
-        <EmployeesList data={data}/>
-        <EmployeesAddForm/>
-    </div>
-  );
+      
+    })
+  }
+
+ 
+  render(){
+    return (
+      <div className="app">
+          <AppInfo />
+
+          <div className="search-panel">
+              <SearchPanel/>
+              <AppFilter/>
+          </div>
+          
+          <EmployeesList 
+            data={this.state.data}
+            onDelete = {this.deleteItem}/>
+          <EmployeesAddForm/>
+      </div>
+    );
+  }
+
+  
 }
 
 export default App;
