@@ -23,19 +23,21 @@ class App extends Component {
     this.maxId = 4;
   };
 
-  addItem = (name,salary) => {
+  addItem = (name, salary) => {
+    const newItem = {
+        name, 
+        salary,
+        increase: false,
+        id: ++this.maxId
+    }
     this.setState(({data}) => {
-      // debugger;
-      const newData = data.map(item => item); 
-      // this.maxId += 1;
-      newData.push({name: name, salary: +salary, increase: false, id: this.maxId})
-      console.log(newData);
-      return {
-        data: newData,        
-      }
-      
-    })
-  }
+        const newArr = [...data, newItem];
+        console.log(newArr);
+        return {
+            data: newArr
+        }
+    });
+}
 
   deleteItem = (id) => {
     // console.log(id);
@@ -70,12 +72,7 @@ class App extends Component {
             data={this.state.data}
             onDelete = {this.deleteItem}
             />
-          <EmployeesAddForm
-            onAdd = {(name,salary) => {
-              this.maxId++;
-              this.addItem(name,salary);
-            }}
-          />
+          <EmployeesAddForm onAdd={this.addItem}/>
       </div>
     );
   }
