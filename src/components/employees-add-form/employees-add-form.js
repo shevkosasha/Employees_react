@@ -7,7 +7,7 @@ class EmployeesAddForm extends Component{
         super(props)
         this.state = {
             name:'',
-            salary:0,
+            salary:'',
         }
     }
 
@@ -18,7 +18,7 @@ class EmployeesAddForm extends Component{
     }
 
     render(){
-
+        const {onAdd} = this.props;
         const {name, salary} = this.state;
         return (
             <div className="app-add-form">
@@ -26,20 +26,30 @@ class EmployeesAddForm extends Component{
                 <form
                     className="add-form d-flex">
                     <input type="text"
-                        className="form-control new-post-label"
+                        className="form-control new-post-label employee-name"
                         placeholder="Как его зовут?" 
                         name="name"
                         value={name}
                         onChange={this.onValueChange}/>
                     <input type="number"
-                        className="form-control new-post-label"
+                        className="form-control new-post-label employee-salary"
                         placeholder="З/П в $?"
                         name="salary"
                         value={salary}
                         onChange={this.onValueChange} />
     
                     <button type="submit"
-                            className="btn btn-outline-light">Добавить</button>
+                            className="btn btn-outline-light"
+                            onClick = {(e) => {
+
+                                e.preventDefault()
+                                let name = e.target.parentNode.querySelector('.employee-name').value;
+                                let salary = e.target.parentNode.querySelector('.employee-salary').value;
+
+                                onAdd(name,salary);
+                            }}
+                            >Добавить
+                    </button>
                 </form>
             </div>
         )
